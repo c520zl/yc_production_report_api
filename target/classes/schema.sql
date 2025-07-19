@@ -1,0 +1,45 @@
+-- 创建用户表
+CREATE TABLE `user` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `username` VARCHAR(50) NOT NULL COMMENT '用户名',
+  `password` VARCHAR(100) NOT NULL COMMENT '加密密码',
+  `salt` VARCHAR(50) NOT NULL COMMENT '盐值',
+  `full_name` VARCHAR(100) DEFAULT NULL COMMENT '姓名',
+  `phone` VARCHAR(20) DEFAULT NULL COMMENT '手机号',
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `enabled` TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用(1-启用,0-禁用)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+-- 创建管理员表
+CREATE TABLE `admin` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
+  `username` VARCHAR(50) NOT NULL COMMENT '用户名',
+  `password` VARCHAR(100) NOT NULL COMMENT '加密密码',
+  `salt` VARCHAR(50) NOT NULL COMMENT '盐值',
+  `full_name` VARCHAR(100) DEFAULT NULL COMMENT '姓名',
+  `phone` VARCHAR(20) DEFAULT NULL COMMENT '手机号',
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `enabled` TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用(1-启用,0-禁用)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员表';
+
+-- 创建生产报表表(如果不存在)
+CREATE TABLE IF NOT EXISTS `production_report` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '报表ID',
+  `report_no` VARCHAR(50) NOT NULL COMMENT '报表编号',
+  `product_name` VARCHAR(100) NOT NULL COMMENT '产品名称',
+  `production_date` DATE NOT NULL COMMENT '生产日期',
+  `total_quantity` INT NOT NULL COMMENT '总产量',
+  `defect_quantity` INT NOT NULL COMMENT '缺陷数量',
+  `defect_rate` DECIMAL(10,2) GENERATED ALWAYS AS (defect_quantity/total_quantity*100) STORED COMMENT '缺陷率(%)',
+  `creator_id` BIGINT NOT NULL COMMENT '创建人ID',
+  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_report_no` (`report_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='生产报表表';
