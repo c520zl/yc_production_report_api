@@ -33,15 +33,15 @@ public class UserController {
      * 用户登录
      */
     @PostMapping("/login")
-public ResultVO login(@RequestBody User user, HttpServletRequest request) {
-    String captcha = user.getCaptcha();
-    HttpSession session = request.getSession();
-    String sessionCaptcha = (String) session.getAttribute("captchaCode");
-    
-    if (captcha == null || sessionCaptcha == null || !captcha.equalsIgnoreCase(sessionCaptcha)) {
-        return ResultVO.error("验证码错误或已过期");
+    public ResultVO login(@RequestBody User user, HttpServletRequest request) {
+        String captcha = user.getCaptcha();
+        HttpSession session = request.getSession();
+        String sessionCaptcha = (String) session.getAttribute("captchaCode");
+
+        if (captcha == null || sessionCaptcha == null || !captcha.equalsIgnoreCase(sessionCaptcha)) {
+            return ResultVO.error("验证码错误或已过期");
+        }
+        session.removeAttribute("captchaCode");
+        return userService.login(user.getUsername(), user.getPassword());
     }
-    session.removeAttribute("captchaCode");
-    return userService.login(user.getUsername(), user.getPassword());
-}
 }

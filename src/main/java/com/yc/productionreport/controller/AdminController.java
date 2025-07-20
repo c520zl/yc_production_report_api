@@ -3,6 +3,7 @@ package com.yc.productionreport.controller;
 import com.yc.productionreport.entity.Admin;
 import com.yc.productionreport.service.AdminService;
 import com.yc.productionreport.vo.ResultVO;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,8 +38,23 @@ public class AdminController {
      * 管理员登录
      */
     @PostMapping("/login")
-    public ResultVO login(@RequestBody Admin admin) {
-        return adminService.login(admin.getUsername(), admin.getPassword());
+    public ResultVO login(@RequestBody Map<String, String> loginData, HttpServletRequest request) {
+        String username = loginData.get("username");
+        String password = loginData.get("password");
+        String captcha = loginData.get("captcha");
+        
+        // 验证验证码
+        HttpSession session = request.getSession();
+        String storedCaptcha = (String) session.getAttribute("captchaCode");
+        
+        if (captcha == null || storedCaptcha == null || !captcha.equalsIgnoreCase(storedCaptcha)) {
+            return ResultVO.error("验证码错误或已过期");
+        }
+        
+        // 验证成功后移除验证码
+        session.removeAttribute("captchaCode");
+        
+        return adminService.login(username, password);
     }
 
     /**
