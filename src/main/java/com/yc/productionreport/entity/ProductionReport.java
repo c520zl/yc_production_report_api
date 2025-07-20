@@ -187,13 +187,13 @@ public class ProductionReport {
     public String getFinishedProductSpecification() { return finishedProductSpecification; }
     public void setFinishedProductSpecification(String finishedProductSpecification) { this.finishedProductSpecification = finishedProductSpecification; }
 
-    public BigDecimal getIncomingMaterialLength() { return incomingMaterialLength; }
+    public @DecimalMin(value = "0", message = "来料长度不能为负数") BigDecimal getIncomingMaterialLength() { return incomingMaterialLength; }
     public void setIncomingMaterialLength(BigDecimal incomingMaterialLength) { this.incomingMaterialLength = incomingMaterialLength; }
 
-    public BigDecimal getSetupMaterialLength() { return setupMaterialLength; }
+    public @DecimalMin(value = "0", message = "设置材料长度不能为负数") BigDecimal getSetupMaterialLength() { return setupMaterialLength; }
     public void setSetupMaterialLength(BigDecimal setupMaterialLength) { this.setupMaterialLength = setupMaterialLength; }
 
-    public BigDecimal getEndMaterialLength() { return endMaterialLength; }
+    public @DecimalMin(value = "0", message = "结束材料长度不能为负数") BigDecimal getEndMaterialLength() { return endMaterialLength; }
     public void setEndMaterialLength(BigDecimal endMaterialLength) { this.endMaterialLength = endMaterialLength; }
 
     public Integer getCompletedQuantity() { return completedQuantity; }
@@ -202,10 +202,10 @@ public class ProductionReport {
     public Integer getDefectCount() { return defectCount; }
     public void setDefectCount(Integer defectCount) { this.defectCount = defectCount; }
 
-    public BigDecimal getScrapMaterialLength() { return scrapMaterialLength; }
+    public @DecimalMin(value = "0", message = "废料长度不能为负数") BigDecimal getScrapMaterialLength() { return scrapMaterialLength; }
     public void setScrapMaterialLength(BigDecimal scrapMaterialLength) { this.scrapMaterialLength = scrapMaterialLength; }
 
-    public BigDecimal getRemainingMaterialLength() { return remainingMaterialLength; }
+    public @DecimalMin(value = "0", message = "剩余材料长度不能为负数") BigDecimal getRemainingMaterialLength() { return remainingMaterialLength; }
     public void setRemainingMaterialLength(BigDecimal remainingMaterialLength) { this.remainingMaterialLength = remainingMaterialLength; }
 
     public Date getWorkStartTime() { return workStartTime; }

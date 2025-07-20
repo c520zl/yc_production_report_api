@@ -47,8 +47,9 @@ public class ProductionReportController {
     }
 
     // 修改
-    @PutMapping
-    public Result<Boolean> update(@Valid @RequestBody ProductionReport report) {
+    @PutMapping("/{id}")
+    public Result<Boolean> update(@PathVariable Long id, @Valid @RequestBody ProductionReport report) {
+        report.setId(id);
         return Result.success(productionReportService.updateById(report));
     }
 

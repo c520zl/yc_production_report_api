@@ -120,6 +120,14 @@ public class ProductionReportServiceImpl extends ServiceImpl<ProductionReportMap
         if (params.get("machineId") != null) {
             queryWrapper.eq("machine_id", params.get("machineId"));
         }
+        // 添加关键词模糊查询
+        if (params.get("keyword") != null && !params.get("keyword").toString().isEmpty()) {
+            String keyword = params.get("keyword").toString();
+            queryWrapper.like("production_order_number", keyword)
+                        .or().like("machine_id", keyword)
+                        .or().like("picker_name", keyword)
+                        .or().like("machine_operator", keyword);
+        }
         if (params.get("startDate") != null && params.get("endDate") != null) {
             queryWrapper.between("report_date", params.get("startDate"), params.get("endDate"));
         } else if (params.get("startDate") != null) {
